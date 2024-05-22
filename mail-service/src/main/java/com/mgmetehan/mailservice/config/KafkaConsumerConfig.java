@@ -34,10 +34,10 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> ContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, Object> containerFactory(ConsumerFactory<String, Object> consumerFactory) {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        factory.setMessageConverter(new StringJsonMessageConverter());
+        factory.setConsumerFactory(consumerFactory);
+        factory.setRecordMessageConverter(new StringJsonMessageConverter());
         return factory;
     }
 }

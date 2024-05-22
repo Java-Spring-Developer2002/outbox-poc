@@ -17,15 +17,15 @@ import org.springframework.stereotype.Component;
 public class KafkaConsumer {
     private static final String TOPIC_NAME = "account-created";
     private static final String GROUP_ID = "GroupId";
-    private static final String CONTAINER_FACTORY = "ContainerFactory";
+    private static final String CONTAINER_FACTORY = "containerFactory";
 
     private final MailService mailService;
     private final ObjectMapper MAPPER = new ObjectMapper();
 
     @KafkaListener(topics = {TOPIC_NAME}, groupId = GROUP_ID, containerFactory = CONTAINER_FACTORY)
-    public void listener(@Payload Object event, ConsumerRecord c) throws Exception {
+    public void listener(@Payload Object event, ConsumerRecord<String, String> c) throws Exception {
         // Kafka kaydinin degerini bir dize olarak al
-        String value = (String) c.value();
+        String value = c.value();
 
         // Deger dizesini JSON dugumune donustur
         JsonNode payload = MAPPER.readTree(value);

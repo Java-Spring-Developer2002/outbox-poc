@@ -23,15 +23,15 @@ public class OutboxService {
     private final KafkaPublisher kafkaPublisher;
     private final ObjectMapper MAPPER = new ObjectMapper();
 
-    public Outbox createOutbox(Outbox outbox) {
-        return outboxRepository.save(outbox);
+    public void createOutbox(Outbox outbox) {
+        outboxRepository.save(outbox);
     }
 
     public void debeziumDatabaseChange(Map<String, Object> payload) {
         log.info("Debezium payload: {}", payload);
         try {
-            kafkaPublisher.publish("account-created", MAPPER.writeValueAsString(payload));
             var x = MAPPER.writeValueAsString(payload);
+            kafkaPublisher.publish("account-created", x);
             log.info("Debezium payload string: {}", x);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -63,7 +63,7 @@ public class OutboxService {
                     return outbox.getId(); // Eşleşen id'yi döndürün
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Failed to parse payload: {}", payload, e);
             }
         }
         return null;

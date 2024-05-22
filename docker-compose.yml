@@ -8,7 +8,7 @@ services:
     depends_on:
       - zookeeper  # Kafka'nin calisabilmesi icin ZooKeeper hizmetine baglidir.
     ports:
-      - 59092:59092  # Kafka'ya disaridan erisim saglar.
+      - "59092:59092"  # Kafka'ya disaridan erisim saglar.
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181  # Kafka'nin ZooKeeper ile iletisim kurmasini saglar.
@@ -26,7 +26,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZK_SERVER_HEAP: "-Xmx256M -Xms256M"  # ZooKeeper'in bellek yapilandirmalarini belirler.
     ports:
-      - 52181:2181  # ZooKeeper'a disaridan erisim saglar.
+      - "52181:2181"  # ZooKeeper'a disaridan erisim saglar.
 
   # Kafka Connect hizmeti, Kafka veri akislarini kaydetmek ve islemek icin kullanilir.
   kafka_connect:
@@ -45,8 +45,8 @@ services:
       - STATUS_STORAGE_TOPIC=my_connect_statuses
 
   # Kafka UI hizmeti, Kafka kumesini izlemek ve yonetmek icin bir kullanici arayuzu saglar.
-  kafka-ui:
-    container_name: kafka-ui
+  kafka-web:
+    container_name: kafka-web
     image: provectuslabs/kafka-ui:latest
     ports:
       - "9091:8080"  # Kafka UI'ya disaridan erisim saglar.
@@ -67,7 +67,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: toor
     ports:
-      - 5432:5432  # PostgreSQL veritabanina disaridan erisim saglar.
+      - "5432:5432"  # PostgreSQL veritabanina disaridan erisim saglar.
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command:
@@ -82,4 +82,4 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8001:8080  # Adminer'a disaridan erisim saglar.
+      - "8001:8080"  # Adminer'a disaridan erisim saglar.

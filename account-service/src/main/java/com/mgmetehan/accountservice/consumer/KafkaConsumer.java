@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 public class KafkaConsumer {
     private static final String TOPIC_NAME = "delete-process-byId-from-outbox";
     private static final String GROUP_ID = "GroupId";
-    private static final String CONTAINER_FACTORY = "ContainerFactory";
+    private static final String CONTAINER_FACTORY = "containerFactory";
 
     private final OutboxService outboxService;
 
     @KafkaListener(topics = TOPIC_NAME, groupId = GROUP_ID, containerFactory = CONTAINER_FACTORY)
     public void consumeMessage(String message) {
-        log.info("Received message: " + message);
+        log.info("Received message: {}", message);
         outboxService.deleteById(message);
     }
 }

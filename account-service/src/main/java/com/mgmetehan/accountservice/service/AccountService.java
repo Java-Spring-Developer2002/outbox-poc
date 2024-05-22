@@ -1,6 +1,6 @@
 package com.mgmetehan.accountservice.service;
 
-import com.mgmetehan.accountservice.converter.AccountConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mgmetehan.accountservice.converter.OutboxConverter;
 import com.mgmetehan.accountservice.dto.CreateAccountDto;
 import com.mgmetehan.accountservice.model.Account;
@@ -20,7 +20,8 @@ public class AccountService {
     private final OutboxService outboxService;
 
     public Account createAccount(CreateAccountDto dto) {
-        Account newAccount = AccountConverter.fromDto(dto);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Account newAccount = objectMapper.convertValue(dto, Account.class);
         newAccount.setMailStatus(MailStatus.CREATED);
         Account savedAccount = accountRepository.save(newAccount);
         log.info("Account created: {}", savedAccount);

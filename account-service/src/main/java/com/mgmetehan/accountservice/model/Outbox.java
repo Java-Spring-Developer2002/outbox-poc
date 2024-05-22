@@ -1,5 +1,6 @@
 package com.mgmetehan.accountservice.model;
 
+import com.mgmetehan.accountservice.model.enums.OutboxTypes;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,10 +21,10 @@ import org.hibernate.annotations.GenericGenerator;
 public class Outbox {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(name = "UUID", type = org.hibernate.id.uuid.UuidGenerator.class)
     private String id;
 
-    private String type;
+    private OutboxTypes type;
 
     @Column(length = 2000)
     private String payload;
